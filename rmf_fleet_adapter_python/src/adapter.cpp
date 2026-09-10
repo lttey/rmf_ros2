@@ -282,10 +282,8 @@ PYBIND11_MODULE(rmf_adapter, m) {
   .def_property("maximum_delay",
     py::overload_cast<>(
       &agv::RobotUpdateHandle::maximum_delay, py::const_),
-    [&](agv::RobotUpdateHandle& self)
-    {
-      return self.maximum_delay();
-    })
+    py::overload_cast<rmf_utils::optional<rmf_traffic::Duration>>(
+      &agv::RobotUpdateHandle::maximum_delay))
   .def("current_task_id",
     [&](agv::RobotUpdateHandle& self)
     {
@@ -655,10 +653,8 @@ PYBIND11_MODULE(rmf_adapter, m) {
   .def_property("default_maximum_delay",
     py::overload_cast<>(
       &agv::FleetUpdateHandle::default_maximum_delay, py::const_),
-    [&](agv::FleetUpdateHandle& self)
-    {
-      return self.default_maximum_delay();
-    })
+    py::overload_cast<std::optional<rmf_traffic::Duration>>(
+      &agv::FleetUpdateHandle::default_maximum_delay))
   .def("fleet_state_publish_period",
     &agv::FleetUpdateHandle::fleet_state_publish_period,
     py::arg("value"),
@@ -782,11 +778,9 @@ PYBIND11_MODULE(rmf_adapter, m) {
     py::return_value_policy::reference_internal)
   .def_property("errors",
     py::overload_cast<>(
-      &Confirmation::errors, py::const_),\
-      [&](Confirmation& self)
-    {
-      return self.errors();
-    });
+      &Confirmation::errors, py::const_),
+    py::overload_cast<std::vector<std::string>>(
+      &Confirmation::errors));
 
   // SPEED LIMIT REQUEST ===============================================
   py::class_<agv::FleetUpdateHandle::SpeedLimitRequest>(
